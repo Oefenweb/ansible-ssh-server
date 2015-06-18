@@ -1,12 +1,6 @@
 # tasks file for ssh-server
 ---
-- name: install package
-  apt:
-    name: openssh-server
-    state: latest
-    update_cache: true
-    cache_valid_time: 3600
-  tags: [configuration, ssh-server, ssh-server-install]
+- include: install.yml
 
 - name: start and enable service
   service:

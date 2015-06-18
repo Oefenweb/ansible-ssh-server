@@ -1,2 +1,3 @@
 # defaults file for ssh-server
 ---
+ssh_server_install: []
