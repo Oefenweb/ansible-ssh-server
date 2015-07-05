@@ -1,80 +1,84 @@
+# {{ ansible_managed }}
+
 # Package generated configuration file
 # See the sshd_config(5) manpage for details
 
 # What ports, IPs and protocols we listen for
-Port 22
+Port {{ ssh_server_port }}
 # Use these options to restrict which interfaces/protocols sshd will bind to
-#ListenAddress ::
-#ListenAddress 0.0.0.0
-Protocol 2
+{% for listen_address in ssh_server_listen_address %}
+ListenAddress {{ listen_address }}
+{% endfor %}
+Protocol {{ ssh_server_protocol }}
 # HostKeys for protocol version 2
-HostKey /etc/ssh/ssh_host_rsa_key
-HostKey /etc/ssh/ssh_host_dsa_key
-HostKey /etc/ssh/ssh_host_ecdsa_key
-HostKey /etc/ssh/ssh_host_ed25519_key
-#Privilege Separation is turned on for security
-UsePrivilegeSeparation yes
+{% for ssh_server_host_key in ssh_server_host_keys %}
+{% if ssh_server_host_key != '' %}
+HostKey {{ ssh_server_host_key }}
+{% endif %}
+{% endfor %}
+# Privilege Separation is turned on for security
+UsePrivilegeSeparation {{ 'yes' if ssh_server_use_privilege_separation else 'no' }}
 
 # Lifetime and size of ephemeral version 1 server key
-KeyRegenerationInterval 3600
-ServerKeyBits 1024
+KeyRegenerationInterval {{ ssh_server_key_regeneration_interval }}
+ServerKeyBits {{ ssh_server_server_key_bits }}
 
 # Logging
-SyslogFacility AUTH
-LogLevel INFO
+SyslogFacility {{ ssh_server_syslog_facility }}
+LogLevel {{ ssh_server_log_level }}
 
 # Authentication:
-LoginGraceTime 120
-PermitRootLogin without-password
-StrictModes yes
+LoginGraceTime {{ ssh_server_login_grace_time }}
+PermitRootLogin {{ ssh_server_permit_root_login }}
+StrictModes {{ 'yes' if ssh_server_strict_modes else 'no' }}
 
-RSAAuthentication yes
-PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+RSAAuthentication {{ 'yes' if ssh_server_rsa_authentication else 'no' }}
+PubkeyAuthentication {{ 'yes' if ssh_server_pubkey_authentication else 'no' }}
+AuthorizedKeysFile {{ ssh_server_authorized_keys_file }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-IgnoreRhosts yes
+IgnoreRhosts {{ 'yes' if ssh_server_ignore_rhosts else 'no' }}
 # For this to work you will also need host keys in /etc/ssh_known_hosts
-RhostsRSAAuthentication no
+RhostsRSAAuthentication {{ 'yes' if ssh_server_rhosts_rsa_authentication else 'no' }}
 # similar for protocol version 2
-HostbasedAuthentication no
+HostbasedAuthentication {{ 'yes' if ssh_server_hostbased_authentication else 'no' }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-#IgnoreUserKnownHosts yes
+IgnoreUserKnownHosts {{ 'yes' if ssh_server_ignore_user_known_hosts else 'no' }}
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
-PermitEmptyPasswords no
+PermitEmptyPasswords {{ 'yes' if ssh_server_permit_empty_passwords else 'no' }}
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-ChallengeResponseAuthentication no
+ChallengeResponseAuthentication {{ 'yes' if ssh_server_challenge_response_authentication else 'no' }}
 
 # Change to no to disable tunnelled clear text passwords
-#PasswordAuthentication yes
+PasswordAuthentication {{ 'yes' if ssh_server_password_authentication else 'no' }}
 
 # Kerberos options
-#KerberosAuthentication no
-#KerberosGetAFSToken no
-#KerberosOrLocalPasswd yes
-#KerberosTicketCleanup yes
+KerberosAuthentication {{ 'yes' if ssh_server_kerberos_authentication else 'no' }}
+KerberosGetAFSToken {{ 'yes' if ssh_server_kerberos_get_afs_token else 'no' }}
+KerberosOrLocalPasswd {{ 'yes' if ssh_server_kerberos_or_local_passwd else 'no' }}
+KerberosTicketCleanup {{ 'yes' if ssh_server_kerberos_ticket_cleanup else 'no' }}
 
 # GSSAPI options
-#GSSAPIAuthentication no
-#GSSAPICleanupCredentials yes
+GSSAPIAuthentication {{ 'yes' if ssh_server_gssapi_authentication else 'no' }}
+GSSAPICleanupCredentials {{ 'yes' if ssh_server_gssapi_cleanup_credentials else 'no' }}
 
-X11Forwarding yes
-X11DisplayOffset 10
-PrintMotd no
-PrintLastLog yes
-TCPKeepAlive yes
-#UseLogin no
+X11Forwarding {{ 'yes' if ssh_server_x11_forwarding else 'no' }}
+X11DisplayOffset {{ ssh_server_x11_display_offset }}
+PrintMotd {{ 'yes' if ssh_server_print_motd else 'no' }}
+PrintLastLog {{ 'yes' if ssh_server_print_last_log else 'no' }}
+TCPKeepAlive {{ 'yes' if ssh_server_tcp_keep_alive else 'no' }}
+UseLogin {{ 'yes' if ssh_server_use_login else 'no' }}
 
-#MaxStartups 10:30:60
-#Banner /etc/issue.net
+MaxStartups {{ ssh_server_max_startups }}
+Banner {{ ssh_server_banner }}
 
 # Allow client to pass locale environment variables
-AcceptEnv LANG LC_*
+AcceptEnv {{ ssh_server_accept_env }}
 
-Subsystem sftp /usr/lib/openssh/sftp-server
+Subsystem {{ ssh_server_subsystem }}
 
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -85,4 +89,19 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-UsePAM yes
+UsePAM {{ 'yes' if ssh_server_use_pam else 'no' }}
+
+UseDNS {{ 'yes' if ssh_server_use_dns else 'no' }}
+
+{% if ssh_server_allow_groups %}
+AllowGroups {{ ssh_server_allow_groups | join(' ') }}
+{% endif %}
+{% if ssh_server_allow_users %}
+DenyGroups {{ ssh_server_allow_users | join(' ') }}
+{% endif %}
+{% if ssh_server_deny_groups %}
+AllowUsers {{ ssh_server_deny_groups | join(' ') }}
+{% endif %}
+{% if ssh_server_deny_users %}
+DenyUsers {{ ssh_server_deny_users | join(' ') }}
+{% endif %}

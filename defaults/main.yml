@@ -1,3 +1,56 @@
 # defaults file for ssh-server
 ---
 ssh_server_install: []
+
+ssh_server_port: 22
+ssh_server_protocol: 2
+ssh_server_listen_address:
+  - '0.0.0.0'
+  - '::'
+ssh_server_host_keys:
+  - /etc/ssh/ssh_host_rsa_key
+  - /etc/ssh/ssh_host_dsa_key
+  # Introduced in Ubuntu 12.04, Debian 7.8
+  - /etc/ssh/ssh_host_ecdsa_key
+  # Introduced in Ubuntu 14.04, Debian 8.1
+  - /etc/ssh/ssh_host_ed25519_key
+ssh_server_server_key_bits: 1024
+ssh_server_use_privilege_separation: true
+ssh_server_key_regeneration_interval: 3600
+ssh_server_syslog_facility: AUTH
+ssh_server_log_level: INFO
+ssh_server_login_grace_time: 120
+ssh_server_permit_root_login: without-password
+ssh_server_strict_modes: true
+ssh_server_rsa_authentication: true
+ssh_server_pubkey_authentication: true
+ssh_server_authorized_keys_file: '%h/.ssh/authorized_keys'
+ssh_server_ignore_rhosts: true
+ssh_server_rhosts_rsa_authentication: false
+ssh_server_hostbased_authentication: false
+ssh_server_ignore_user_known_hosts: false
+ssh_server_permit_empty_passwords: false
+ssh_server_challenge_response_authentication: false
+ssh_server_password_authentication: true
+ssh_server_kerberos_authentication: false
+ssh_server_kerberos_get_afs_token: false
+ssh_server_kerberos_or_local_passwd: true
+ssh_server_kerberos_ticket_cleanup: true
+ssh_server_gssapi_authentication: false
+ssh_server_gssapi_cleanup_credentials: true
+ssh_server_x11_forwarding: true
+ssh_server_x11_display_offset: 10
+ssh_server_print_motd: false
+ssh_server_print_last_log: true
+ssh_server_tcp_keep_alive: true
+ssh_server_use_login: false
+ssh_server_max_startups: '10:30:60'
+ssh_server_banner: none
+ssh_server_accept_env: LANG LC_*
+ssh_server_subsystem: sftp /usr/lib/openssh/sftp-server
+ssh_server_use_pam: true
+ssh_server_use_dns: true
+ssh_server_allow_groups: []
+ssh_server_allow_users: []
+ssh_server_deny_groups: []
+ssh_server_deny_users: []
