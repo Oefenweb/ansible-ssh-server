@@ -1,0 +1,45 @@
+# tasks file for ssh-server
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+  with_items: ssh_server_dependencies
+  tags: [configuration, ssh-server, ssh-server-dependencies]
+
+- name: install
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: ssh_server_install
+  tags: [configuration, ssh-server, ssh-server-install]
+
+- name: check host keys
+  command: "ssh-keygen -A"
+  args:
+    creates: "{{ item }}"
+  register: check_host_keys
+  changed_when: "'generating new host keys' in check_host_keys.stdout"
+  with_items: ssh_server_host_keys
+  when: item != '' and (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('12.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('7.0', '>='))
+  tags: [configuration, ssh-server, ssh-server-check-host-keys]
+
+- name: update configuration file
+  template:
+    src: etc/ssh/sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+    validate: 'sshd -T -f %s'
+  notify: restart ssh
+  tags: [configuration, ssh-server, ssh-server-configuration]
+
+- name: start and enable service
+  service:
+    name: ssh
+    state: started
+    enabled: yes
+  tags: [configuration, ssh-server, ssh-server-start-enable-service]
