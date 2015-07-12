@@ -97,10 +97,10 @@ UseDNS {{ 'yes' if ssh_server_use_dns else 'no' }}
 AllowGroups {{ ssh_server_allow_groups | join(' ') }}
 {% endif %}
 {% if ssh_server_allow_users %}
-DenyGroups {{ ssh_server_allow_users | join(' ') }}
+AllowUsers {{ ssh_server_allow_users | join(' ') }}
 {% endif %}
 {% if ssh_server_deny_groups %}
-AllowUsers {{ ssh_server_deny_groups | join(' ') }}
+DenyGroups {{ ssh_server_deny_groups | join(' ') }}
 {% endif %}
 {% if ssh_server_deny_users %}
 DenyUsers {{ ssh_server_deny_users | join(' ') }}
