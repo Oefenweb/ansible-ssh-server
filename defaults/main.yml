@@ -30,12 +30,6 @@ ssh_server_ignore_user_known_hosts: false
 ssh_server_permit_empty_passwords: false
 ssh_server_challenge_response_authentication: false
 ssh_server_password_authentication: true
-ssh_server_kerberos_authentication: false
-ssh_server_kerberos_get_afs_token: false
-ssh_server_kerberos_or_local_passwd: true
-ssh_server_kerberos_ticket_cleanup: true
-ssh_server_gssapi_authentication: false
-ssh_server_gssapi_cleanup_credentials: true
 ssh_server_x11_forwarding: true
 ssh_server_x11_display_offset: 10
 ssh_server_print_motd: false

@@ -34,12 +34,12 @@ None
 * `ssh_server_permit_empty_passwords`: [default: `false`]: When password authentication is allowed, it specifies whether the server allows login to accounts with empty password strings
 * `ssh_server_challenge_response_authentication`: [default: `false`]: Specifies whether challenge-response authentication is allowed (e.g. via `PAM`)
 * `ssh_server_password_authentication`: [default: `true`]: Specifies whether password authentication is allowed
-* `ssh_server_kerberos_authentication`: [default: `false`]: Specifies whether the password provided by the user for `PasswordAuthentication` will be validated through the Kerberos KDC
-* `ssh_server_kerberos_get_afs_token`: [default: `false`]: If AFS is active and the user has a Kerberos 5 TGT, attempt to acquire an AFS token before accessing the user's home directory
-* `ssh_server_kerberos_or_local_passwd`: [default: `true`]: If password authentication through Kerberos fails then the password will be validated via any additional local mechanism such as `/etc/passwd`
-* `ssh_server_kerberos_ticket_cleanup`: [default: `true`]: Specifies whether to automatically destroy the user's ticket cache file on logout
-* `ssh_server_gssapi_authentication`: [default: `false`]: Specifies whether user authentication based on GSSAPI is allowed
-* `ssh_server_gssapi_cleanup_credentials`: [default: `true`]: Specifies whether to automatically destroy the user's credentials cache on logout
+* `ssh_server_kerberos_authentication`: [optional, default: `false`]: Specifies whether the password provided by the user for `PasswordAuthentication` will be validated through the Kerberos KDC
+* `ssh_server_kerberos_get_afs_token`: [optional, default: `false`]: If AFS is active and the user has a Kerberos 5 TGT, attempt to acquire an AFS token before accessing the user's home directory
+* `ssh_server_kerberos_or_local_passwd`: [optional, default: `true`]: If password authentication through Kerberos fails then the password will be validated via any additional local mechanism such as `/etc/passwd`
+* `ssh_server_kerberos_ticket_cleanup`: [optional, default: `true`]: Specifies whether to automatically destroy the user's ticket cache file on logout
+* `ssh_server_gssapi_authentication`: [optional, default: `false`]: Specifies whether user authentication based on GSSAPI is allowed
+* `ssh_server_gssapi_cleanup_credentials`: [optional, default: `true`]: Specifies whether to automatically destroy the user's credentials cache on logout
 * `ssh_server_x11_forwarding`: [default: `true`]: Specifies whether X11 forwarding is permitted
 * `ssh_server_x11_display_offset`: [default: `10`]: Specifies the first display number available for `sshd`'s X11 forwarding. This prevents `sshd` from interfering with real X11 servers
 * `ssh_server_print_motd`: [default: `false`]: Specifies whether `sshd` should print `/etc/motd` when a user logs in interactively
