@@ -56,14 +56,26 @@ ChallengeResponseAuthentication {{ 'yes' if ssh_server_challenge_response_authen
 PasswordAuthentication {{ 'yes' if ssh_server_password_authentication else 'no' }}
 
 # Kerberos options
+{% if ssh_server_kerberos_authentication is defined %}
 KerberosAuthentication {{ 'yes' if ssh_server_kerberos_authentication else 'no' }}
+{% endif %}
+{% if ssh_server_kerberos_get_afs_token is defined %}
 KerberosGetAFSToken {{ 'yes' if ssh_server_kerberos_get_afs_token else 'no' }}
+{% endif %}
+{% if ssh_server_kerberos_or_local_passwd is defined %}
 KerberosOrLocalPasswd {{ 'yes' if ssh_server_kerberos_or_local_passwd else 'no' }}
+{% endif %}
+{% if ssh_server_kerberos_ticket_cleanup is defined %}
 KerberosTicketCleanup {{ 'yes' if ssh_server_kerberos_ticket_cleanup else 'no' }}
+{% endif %}
 
 # GSSAPI options
+{% if ssh_server_gssapi_authentication is defined %}
 GSSAPIAuthentication {{ 'yes' if ssh_server_gssapi_authentication else 'no' }}
+{% endif %}
+{% if ssh_server_gssapi_cleanup_credentials is defined %}
 GSSAPICleanupCredentials {{ 'yes' if ssh_server_gssapi_cleanup_credentials else 'no' }}
+{% endif %}
 
 X11Forwarding {{ 'yes' if ssh_server_x11_forwarding else 'no' }}
 X11DisplayOffset {{ ssh_server_x11_display_offset }}
