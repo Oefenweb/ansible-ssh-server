@@ -41,5 +41,5 @@
   service:
     name: ssh
     state: started
-    enabled: yes
+    enabled: true
   tags: [configuration, ssh-server, ssh-server-start-enable-service]
