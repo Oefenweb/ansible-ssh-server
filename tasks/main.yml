@@ -2,11 +2,10 @@
 ---
 - name: install dependencies
   apt:
-    name: "{{ item }}"
+    name: "{{ ssh_server_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
-  with_items: "{{ ssh_server_dependencies }}"
   tags:
     - configuration
     - ssh-server
@@ -14,9 +13,8 @@
 
 - name: install
   apt:
-    name: "{{ item }}"
+    name: "{{ ssh_server_install }}"
     state: "{{ apt_install_state | default('latest') }}"
-  with_items: "{{ ssh_server_install }}"
   tags:
     - configuration
     - ssh-server
@@ -25,10 +23,9 @@
 - name: check host keys
   command: ssh-keygen -A
   args:
-    creates: "{{ item }}"
+    creates: "{{ ssh_server_host_keys }}"
   register: check_host_keys
   changed_when: "'generating new host keys' in check_host_keys.stdout"
-  with_items: "{{ ssh_server_host_keys }}"
   when: item != '' and (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('12.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('7.0', '>='))
   tags:
     - configuration
