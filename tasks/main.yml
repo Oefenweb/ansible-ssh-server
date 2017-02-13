@@ -29,7 +29,7 @@
   register: check_host_keys
   changed_when: "'generating new host keys' in check_host_keys.stdout"
   with_items: "{{ ssh_server_host_keys }}"
-  when: item != '' and (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('12.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('7.0', '>='))
+  when: item != ''
   tags:
     - configuration
     - ssh-server

@@ -10,7 +10,7 @@ ssh_server_listen_address:
 ssh_server_host_keys:
   - /etc/ssh/ssh_host_rsa_key
   - /etc/ssh/ssh_host_dsa_key
-  - "{{ '/etc/ssh/ssh_host_ecdsa_key' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('12.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('7.0', '>=')) else '' }}"
+  - /etc/ssh/ssh_host_ecdsa_key
   - "{{ '/etc/ssh/ssh_host_ed25519_key' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('14.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('8.0', '>=')) else '' }}"
 ssh_server_server_key_bits: "{{ 1024 if (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('14.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version | version_compare('8.0', '>=')) else 768 }}"
 ssh_server_use_privilege_separation: true
