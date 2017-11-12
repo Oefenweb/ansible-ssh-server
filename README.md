@@ -12,7 +12,7 @@ None
 
 * `ssh_server_install`: [default: `[]`]: Additional packages to install
 
-* `ssh_server_port`: [default: `22`]: Specifies the port number to connect on the remote host 
+* `ssh_server_port`: [default: `22`]: Specifies the port number to connect on the remote host
 * `ssh_server_protocol`: [default: `2`]: Specifies the protocol versions `ssh` should support in order of preference. The possible values are `1` and `2`. Multiple versions must be comma-separated. The default is `2,1`. This means that ssh tries version 2 and falls back to version 1 if version 2 is not available
 * `ssh_server_listen_address:`: [default: `['0.0.0.0', '::']`]: Specifies the local addresses `sshd` should listen on
 * `ssh_server_host_keys:`: [default: `[/etc/ssh/ssh_host_rsa_key, /etc/ssh/ssh_host_dsa_key, /etc/ssh/ssh_host_ecdsa_key, /etc/ssh/ssh_host_ed25519_key]` depending on OS version, see `defaults/main.yml`]: Specifies a file containing a private host key used by SSH
@@ -61,13 +61,43 @@ None
 
 None
 
-#### Example
+#### Example(s)
 
+##### Simple
 ```yaml
 ---
 - hosts: all
   roles:
     - ssh-server
+```
+
+##### Configure security options
+```yaml
+---
+- hosts: all
+  roles:
+    - ssh-server
+  vars:
+    ssh_server_ciphers:
+      - aes128-ctr
+      - aes192-ctr
+      - aes256-ctr
+      - aes128-gcm@openssh.com
+      - aes256-gcm@openssh.com
+      - chacha20-poly1305@openssh.com
+    ssh_server_key_algorithms:
+      - diffie-hellman-group-exchange-sha256
+      - ecdh-sha2-nistp256
+      - ecdh-sha2-nistp384
+      - ecdh-sha2-nistp521
+      - curve25519-sha256@libssh.org
+    ssh_server_macs:
+      - umac-128-etm@openssh.com
+      - hmac-sha2-256-etm@openssh.com
+      - hmac-sha2-512-etm@openssh.com
+      - umac-128@openssh.com
+      - hmac-sha2-256
+      - hmac-sha2-512
 ```
 
 #### License
