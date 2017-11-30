@@ -88,13 +88,13 @@ MaxStartups {{ ssh_server_max_startups }}
 Banner {{ ssh_server_banner }}
 
 # Security options
-{% if ssh_server_ciphers is defined and ssh_server_ciphers %}
+{% if ssh_server_ciphers | default([]) | length %}
 Ciphers {{ ssh_server_ciphers | join(',') }}
 {% endif %}
-{% if ssh_server_key_algorithms is defined and ssh_server_key_algorithms %}
+{% if ssh_server_key_algorithms | default([]) | length %}
 KexAlgorithms {{ ssh_server_key_algorithms | join(',') }}
 {% endif %}
-{% if ssh_server_macs is defined and ssh_server_macs %}
+{% if ssh_server_macs | default([]) | length %}
 MACs {{ ssh_server_macs | join(',') }}
 {% endif %}
 
