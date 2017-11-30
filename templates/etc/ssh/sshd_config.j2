@@ -87,6 +87,17 @@ UseLogin {{ 'yes' if ssh_server_use_login else 'no' }}
 MaxStartups {{ ssh_server_max_startups }}
 Banner {{ ssh_server_banner }}
 
+# Security options
+{% if ssh_server_ciphers | default([]) | length %}
+Ciphers {{ ssh_server_ciphers | join(',') }}
+{% endif %}
+{% if ssh_server_key_algorithms | default([]) | length %}
+KexAlgorithms {{ ssh_server_key_algorithms | join(',') }}
+{% endif %}
+{% if ssh_server_macs | default([]) | length %}
+MACs {{ ssh_server_macs | join(',') }}
+{% endif %}
+
 # Allow client to pass locale environment variables
 AcceptEnv {{ ssh_server_accept_env }}
 
