@@ -79,6 +79,7 @@ GSSAPICleanupCredentials {{ 'yes' if ssh_server_gssapi_cleanup_credentials else 
 
 X11Forwarding {{ 'yes' if ssh_server_x11_forwarding else 'no' }}
 X11DisplayOffset {{ ssh_server_x11_display_offset }}
+GatewayPorts {{ 'yes' if ssh_server_gateway_ports else 'no' }}
 PrintMotd {{ 'yes' if ssh_server_print_motd else 'no' }}
 PrintLastLog {{ 'yes' if ssh_server_print_last_log else 'no' }}
 TCPKeepAlive {{ 'yes' if ssh_server_tcp_keep_alive else 'no' }}

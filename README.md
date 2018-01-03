@@ -40,6 +40,7 @@ None
 * `ssh_server_kerberos_ticket_cleanup`: [optional, default: `true`]: Specifies whether to automatically destroy the user's ticket cache file on logout
 * `ssh_server_gssapi_authentication`: [optional, default: `false`]: Specifies whether user authentication based on GSSAPI is allowed
 * `ssh_server_gssapi_cleanup_credentials`: [optional, default: `true`]: Specifies whether to automatically destroy the user's credentials cache on logout
+* `ssh_server_gateway_ports`: [optional, default: `false`]: Specifies whether remote hosts are allowed to connect to local forwarded ports
 * `ssh_server_x11_forwarding`: [default: `true`]: Specifies whether X11 forwarding is permitted
 * `ssh_server_x11_display_offset`: [default: `10`]: Specifies the first display number available for `sshd`'s X11 forwarding. This prevents `sshd` from interfering with real X11 servers
 * `ssh_server_print_motd`: [default: `false`]: Specifies whether `sshd` should print `/etc/motd` when a user logs in interactively
