@@ -1,6 +1,6 @@
 ## ssh-server
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-ssh-server.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-ssh-server) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-ssh--server-blue.svg)](https://galaxy.ansible.com/tersmitten/ssh-server)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-ssh-server.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-ssh-server) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-ssh--server-blue.svg)](https://galaxy.ansible.com/Oefenweb/ssh-server)
 
 Set up an OpenSSH server in Debian-like systems.
 
