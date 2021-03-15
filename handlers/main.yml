@@ -1,4 +1,4 @@
-# handlers file for ssh-server
+# handlers file
 ---
 - name: restart ssh
   service:

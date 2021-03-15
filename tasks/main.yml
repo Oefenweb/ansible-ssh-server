@@ -1,4 +1,4 @@
-# tasks file for ssh-server
+# tasks file
 ---
 - name: install dependencies
   apt:
