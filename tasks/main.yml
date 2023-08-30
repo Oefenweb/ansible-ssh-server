@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: install dependencies
-  apt:
+  ansible.builtin.apt:
     name: "{{ ssh_server_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -12,7 +12,7 @@
     - ssh-server-dependencies
 
 - name: install
-  apt:
+  ansible.builtin.apt:
     name: "{{ ssh_server_install }}"
     state: "{{ apt_install_state | default('latest') }}"
   tags:
@@ -21,7 +21,7 @@
     - ssh-server-install
 
 - name: check host keys
-  command: >
+  ansible.builtin.command: >
     ssh-keygen -A
   args:
     creates: "{{ item }}"
@@ -35,7 +35,7 @@
     - ssh-server-check-host-keys
 
 - name: update configuration file
-  template:
+  ansible.builtin.template:
     src: etc/ssh/sshd_config.j2
     dest: /etc/ssh/sshd_config
     owner: root
@@ -49,7 +49,7 @@
     - ssh-server-configuration
 
 - name: start and enable service
-  service:
+  ansible.builtin.service:
     name: ssh
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"

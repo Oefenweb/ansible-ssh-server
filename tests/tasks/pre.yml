@@ -2,7 +2,7 @@
 ---
 # To prevent: Missing privilege separation directory
 - name: create (needed) directory
-  file:
+  ansible.builtin.file:
     path: /run/sshd
     state: directory
     owner: root
