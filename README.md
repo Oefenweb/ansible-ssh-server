@@ -73,7 +73,7 @@ None
 ---
 - hosts: all
   roles:
-    - ssh-server
+    - oefenweb.ssh-server
 ```
 
 ##### Configure security options
@@ -81,7 +81,7 @@ None
 ---
 - hosts: all
   roles:
-    - ssh-server
+    - oefenweb.ssh-server
   vars:
     ssh_server_ciphers:
       - aes128-ctr
