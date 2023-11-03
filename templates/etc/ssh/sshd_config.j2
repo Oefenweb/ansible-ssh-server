@@ -16,12 +16,16 @@ Protocol {{ ssh_server_protocol }}
 HostKey {{ ssh_server_host_key }}
 {% endif %}
 {% endfor %}
+{% if ssh_server_version is version('7.5', '<') %}
 # Privilege Separation is turned on for security
 UsePrivilegeSeparation {{ 'yes' if ssh_server_use_privilege_separation else 'no' }}
+{% endif %}
 
+{% if ssh_server_version is version('7.4', '<') %}
 # Lifetime and size of ephemeral version 1 server key
 KeyRegenerationInterval {{ ssh_server_key_regeneration_interval }}
 ServerKeyBits {{ ssh_server_server_key_bits }}
+{% endif %}
 
 # Logging
 SyslogFacility {{ ssh_server_syslog_facility }}
@@ -32,14 +36,18 @@ LoginGraceTime {{ ssh_server_login_grace_time }}
 PermitRootLogin {{ ssh_server_permit_root_login }}
 StrictModes {{ 'yes' if ssh_server_strict_modes else 'no' }}
 
+{% if ssh_server_version is version('7.4', '<') %}
 RSAAuthentication {{ 'yes' if ssh_server_rsa_authentication else 'no' }}
+{% endif %}
 PubkeyAuthentication {{ 'yes' if ssh_server_pubkey_authentication else 'no' }}
 AuthorizedKeysFile {{ ssh_server_authorized_keys_file }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts {{ 'yes' if ssh_server_ignore_rhosts else 'no' }}
+{% if ssh_server_version is version('7.4', '<') %}
 # For this to work you will also need host keys in /etc/ssh_known_hosts
 RhostsRSAAuthentication {{ 'yes' if ssh_server_rhosts_rsa_authentication else 'no' }}
+{% endif %}
 # similar for protocol version 2
 HostbasedAuthentication {{ 'yes' if ssh_server_hostbased_authentication else 'no' }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
@@ -83,8 +91,11 @@ GatewayPorts {{ 'yes' if ssh_server_gateway_ports else 'no' }}
 PrintMotd {{ 'yes' if ssh_server_print_motd else 'no' }}
 PrintLastLog {{ 'yes' if ssh_server_print_last_log else 'no' }}
 TCPKeepAlive {{ 'yes' if ssh_server_tcp_keep_alive else 'no' }}
+{% if ssh_server_version is version('7.4', '<') %}
 UseLogin {{ 'yes' if ssh_server_use_login else 'no' }}
+{% endif %}
 
+MaxSessions {{ ssh_server_max_sessions }}
 MaxStartups {{ ssh_server_max_startups }}
 Banner {{ ssh_server_banner }}
 

@@ -1,5 +1,28 @@
 # tasks file
 ---
+- name: get (current) version
+  ansible.builtin.shell: >
+    dpkg-query -W -f='${Version}' openssh-server | awk -F':' '{print $2}' | awk -F'p' '{print $1}'
+  register: _get_current_version
+  changed_when: false
+  failed_when: false
+  tags:
+    - configuration
+    - ssh-server
+    - ssh-server-version
+    - ssh-server-version-get
+
+- name: set (current) version
+  ansible.builtin.set_fact:
+    ssh_server_version: "{{ _get_current_version.stdout | regex_search('^([0-9]+\\.[0-9]+\\.?[0-9]*)$') }}"
+  changed_when: false
+  check_mode: false
+  tags:
+    - configuration
+    - ssh-server
+    - ssh-server-version
+    - ssh-server-version-set
+
 - name: install dependencies
   ansible.builtin.apt:
     name: "{{ ssh_server_dependencies }}"

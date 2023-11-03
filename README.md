@@ -48,6 +48,7 @@ None
 * `ssh_server_print_last_log`: [default: `true`]: Specifies whether `sshd` should print the date and time of the last user login when a user logs in interactively
 * `ssh_server_tcp_keep_alive`: [default: `true`]: Specifies whether the system should send TCP keepalive messages to the other side
 * `ssh_server_use_login`: [default: `false`]: Specifies whether `login` is used for interactive login sessions
+* `ssh_server_max_sessions`: [default: `10`]: Allows control of the number of multiplexed sessions supported over a single TCP connection. This allows increasing the number of allowed sessions above the previous default of `10`, disabling connection multiplexing (`1`) or disallowing login/shell/subsystem sessions entirely (`0`)
 * `ssh_server_max_startups`: [default: `'10:30:60'`]: Specifies the maximum number of concurrent unauthenticated connections to the SSH daemon. Additional connections will be dropped until authentication succeeds or the `LoginGraceTime` expires for a connection
 * `ssh_server_banner`: [default: `none`]: The contents of the specified file are sent to the remote user before authentication is allowed
 * `ssh_server_ciphers`: [optional, default: `[]`]: Specifies the ciphers allowed for protocol version 2
