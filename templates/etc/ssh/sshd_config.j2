@@ -1,7 +1,7 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
-# Package generated configuration file
-# See the sshd_config(5) manpage for details
+# This is the sshd server system-wide configuration file.  See
+# sshd_config(5) for more information.
 
 # What ports, IPs and protocols we listen for
 Port {{ ssh_server_port }}
@@ -16,12 +16,16 @@ Protocol {{ ssh_server_protocol }}
 HostKey {{ ssh_server_host_key }}
 {% endif %}
 {% endfor %}
+{% if ssh_server_version is version('7.5', '<') %}
 # Privilege Separation is turned on for security
-UsePrivilegeSeparation {{ 'yes' if ssh_server_use_privilege_separation else 'no' }}
+UsePrivilegeSeparation {{ ssh_server_use_privilege_separation | bool | ternary('yes', 'no') }}
+{% endif %}
 
+{% if ssh_server_version is version('7.4', '<') %}
 # Lifetime and size of ephemeral version 1 server key
 KeyRegenerationInterval {{ ssh_server_key_regeneration_interval }}
 ServerKeyBits {{ ssh_server_server_key_bits }}
+{% endif %}
 
 # Logging
 SyslogFacility {{ ssh_server_syslog_facility }}
@@ -30,61 +34,68 @@ LogLevel {{ ssh_server_log_level }}
 # Authentication:
 LoginGraceTime {{ ssh_server_login_grace_time }}
 PermitRootLogin {{ ssh_server_permit_root_login }}
-StrictModes {{ 'yes' if ssh_server_strict_modes else 'no' }}
+StrictModes {{ ssh_server_strict_modes | bool | ternary('yes', 'no') }}
 
-RSAAuthentication {{ 'yes' if ssh_server_rsa_authentication else 'no' }}
-PubkeyAuthentication {{ 'yes' if ssh_server_pubkey_authentication else 'no' }}
+{% if ssh_server_version is version('7.4', '<') %}
+RSAAuthentication {{ ssh_server_rsa_authentication | bool | ternary('yes', 'no') }}
+{% endif %}
+PubkeyAuthentication {{ ssh_server_pubkey_authentication | bool | ternary('yes', 'no') }}
 AuthorizedKeysFile {{ ssh_server_authorized_keys_file }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-IgnoreRhosts {{ 'yes' if ssh_server_ignore_rhosts else 'no' }}
+IgnoreRhosts {{ ssh_server_ignore_rhosts | bool | ternary('yes', 'no') }}
+{% if ssh_server_version is version('7.4', '<') %}
 # For this to work you will also need host keys in /etc/ssh_known_hosts
-RhostsRSAAuthentication {{ 'yes' if ssh_server_rhosts_rsa_authentication else 'no' }}
+RhostsRSAAuthentication {{ ssh_server_rhosts_rsa_authentication | bool | ternary('yes', 'no') }}
+{% endif %}
 # similar for protocol version 2
-HostbasedAuthentication {{ 'yes' if ssh_server_hostbased_authentication else 'no' }}
+HostbasedAuthentication {{ ssh_server_hostbased_authentication | bool | ternary('yes', 'no') }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-IgnoreUserKnownHosts {{ 'yes' if ssh_server_ignore_user_known_hosts else 'no' }}
+IgnoreUserKnownHosts {{ ssh_server_ignore_user_known_hosts | bool | ternary('yes', 'no') }}
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
-PermitEmptyPasswords {{ 'yes' if ssh_server_permit_empty_passwords else 'no' }}
+PermitEmptyPasswords {{ ssh_server_permit_empty_passwords | bool | ternary('yes', 'no') }}
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-ChallengeResponseAuthentication {{ 'yes' if ssh_server_challenge_response_authentication else 'no' }}
+ChallengeResponseAuthentication {{ ssh_server_challenge_response_authentication | bool | ternary('yes', 'no') }}
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication {{ 'yes' if ssh_server_password_authentication else 'no' }}
+PasswordAuthentication {{ ssh_server_password_authentication | bool | ternary('yes', 'no') }}
 
 # Kerberos options
 {% if ssh_server_kerberos_authentication is defined %}
-KerberosAuthentication {{ 'yes' if ssh_server_kerberos_authentication else 'no' }}
+KerberosAuthentication {{ ssh_server_kerberos_authentication | bool | ternary('yes', 'no') }}
 {% endif %}
 {% if ssh_server_kerberos_get_afs_token is defined %}
-KerberosGetAFSToken {{ 'yes' if ssh_server_kerberos_get_afs_token else 'no' }}
+KerberosGetAFSToken {{ ssh_server_kerberos_get_afs_token | bool | ternary('yes', 'no') }}
 {% endif %}
 {% if ssh_server_kerberos_or_local_passwd is defined %}
-KerberosOrLocalPasswd {{ 'yes' if ssh_server_kerberos_or_local_passwd else 'no' }}
+KerberosOrLocalPasswd {{ ssh_server_kerberos_or_local_passwd | bool | ternary('yes', 'no') }}
 {% endif %}
 {% if ssh_server_kerberos_ticket_cleanup is defined %}
-KerberosTicketCleanup {{ 'yes' if ssh_server_kerberos_ticket_cleanup else 'no' }}
+KerberosTicketCleanup {{ ssh_server_kerberos_ticket_cleanup | bool | ternary('yes', 'no') }}
 {% endif %}
 
 # GSSAPI options
 {% if ssh_server_gssapi_authentication is defined %}
-GSSAPIAuthentication {{ 'yes' if ssh_server_gssapi_authentication else 'no' }}
+GSSAPIAuthentication {{ ssh_server_gssapi_authentication | bool | ternary('yes', 'no') }}
 {% endif %}
 {% if ssh_server_gssapi_cleanup_credentials is defined %}
-GSSAPICleanupCredentials {{ 'yes' if ssh_server_gssapi_cleanup_credentials else 'no' }}
+GSSAPICleanupCredentials {{ ssh_server_gssapi_cleanup_credentials | bool | ternary('yes', 'no') }}
 {% endif %}
 
-X11Forwarding {{ 'yes' if ssh_server_x11_forwarding else 'no' }}
+X11Forwarding {{ ssh_server_x11_forwarding | bool | ternary('yes', 'no') }}
 X11DisplayOffset {{ ssh_server_x11_display_offset }}
-GatewayPorts {{ 'yes' if ssh_server_gateway_ports else 'no' }}
-PrintMotd {{ 'yes' if ssh_server_print_motd else 'no' }}
-PrintLastLog {{ 'yes' if ssh_server_print_last_log else 'no' }}
-TCPKeepAlive {{ 'yes' if ssh_server_tcp_keep_alive else 'no' }}
-UseLogin {{ 'yes' if ssh_server_use_login else 'no' }}
+GatewayPorts {{ ssh_server_gateway_ports | bool | ternary('yes', 'no') }}
+PrintMotd {{ ssh_server_print_motd | bool | ternary('yes', 'no') }}
+PrintLastLog {{ ssh_server_print_last_log | bool | ternary('yes', 'no') }}
+TCPKeepAlive {{ ssh_server_tcp_keep_alive | bool | ternary('yes', 'no') }}
+{% if ssh_server_version is version('7.4', '<') %}
+UseLogin {{ ssh_server_use_login | bool | ternary('yes', 'no') }}
+{% endif %}
 
+MaxSessions {{ ssh_server_max_sessions }}
 MaxStartups {{ ssh_server_max_startups }}
 Banner {{ ssh_server_banner }}
 
@@ -113,9 +124,9 @@ Subsystem {{ ssh_server_subsystem }}
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-UsePAM {{ 'yes' if ssh_server_use_pam else 'no' }}
+UsePAM {{ ssh_server_use_pam | bool | ternary('yes', 'no') }}
 
-UseDNS {{ 'yes' if ssh_server_use_dns else 'no' }}
+UseDNS {{ ssh_server_use_dns | bool | ternary('yes', 'no') }}
 
 {% if ssh_server_allow_groups %}
 AllowGroups {{ ssh_server_allow_groups | join(' ') }}
