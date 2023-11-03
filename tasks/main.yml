@@ -1,6 +1,6 @@
 # tasks file
 ---
-- name: get (current) version
+- name: get (current) version  # noqa risky-shell-pipe
   ansible.builtin.shell: >
     dpkg-query -W -f='${Version}' openssh-server | awk -F':' '{print $2}' | awk -F'p' '{print $1}'
   register: _get_current_version
