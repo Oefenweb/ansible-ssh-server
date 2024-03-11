@@ -42,6 +42,12 @@ RSAAuthentication {{ ssh_server_rsa_authentication | bool | ternary('yes', 'no')
 PubkeyAuthentication {{ ssh_server_pubkey_authentication | bool | ternary('yes', 'no') }}
 AuthorizedKeysFile {{ ssh_server_authorized_keys_file }}
 
+{% if ssh_server_autorized_keys_command is defined %}
+AuthorizedKeysCommand {{ ssh_server_autorized_keys_command }}
+AuthorizedKeysCommandUser {{ ssh_server_autorized_keys_command_user }}
+{% endif %}
+
+
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts {{ ssh_server_ignore_rhosts | bool | ternary('yes', 'no') }}
 {% if ssh_server_version is version('7.4', '<') %}
