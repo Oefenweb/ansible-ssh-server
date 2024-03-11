@@ -62,9 +62,8 @@ None
 * `ssh_server_allow_users`: [default: `[]`]: A list of user name patterns. If specified, login is allowed only for user names that match one of the patterns
 * `ssh_server_deny_groups`: [default: `[]`]: A list of group name patterns. If specified, login is disallowed for users whose primary group or supplementary group list matches one of the patterns
 * `ssh_server_deny_users`: [default: `[]`]: A list of user name patterns. If specified, login is disallowed for user names that match one of the patterns
-* `ssh_server_autorized_keys_command`: [default: ]: Specifies a program to be used to look up the user's public keys.
-* `ssh_server_autorized_keys_command_user`: [default: `nobody`]: Specifies the user under whose account the AuthorizedKeysCommand is run
-
+* `ssh_server_autorized_keys_command`: [optional]: Specifies a program to be used to look up the user's public keys
+* `ssh_server_autorized_keys_command_user`: [default: `nobody`]: Specifies the user under whose account the `AuthorizedKeysCommand` is run
 
 ## Dependencies
 
