@@ -57,10 +57,42 @@
     - ssh-server
     - ssh-server-check-host-keys
 
+- name: stat directories
+  ansible.builtin.stat:
+    path: "{{ item }}/"
+  register: _stat_directories
+  with_items:
+    - "{{ ssh_server_config_file | dirname }}"
+    - "{{ ssh_server_runtime_directory }}"
+  tags:
+    - configuration
+    - ssh-server
+    - ssh-server-configure
+    - ssh-server-configure-directories
+    - ssh-server-configure-directories-stat
+
+- name: create directories
+  ansible.builtin.file:
+    path: "{{ item.item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items: "{{ _stat_directories.results }}"
+  when:
+    - item.stat is defined
+    - not item.stat.exists
+  tags:
+    - configuration
+    - ssh-server
+    - ssh-server-configure
+    - ssh-server-configure-directories
+    - ssh-server-configure-directories-create
+
 - name: update configuration file
   ansible.builtin.template:
-    src: etc/ssh/sshd_config.j2
-    dest: /etc/ssh/sshd_config
+    src: "{{ ssh_server_config_file.lstrip('/') }}.j2"
+    dest: "{{ ssh_server_config_file }}"
     owner: root
     group: root
     mode: 0644
@@ -69,7 +101,8 @@
   tags:
     - configuration
     - ssh-server
-    - ssh-server-configuration
+    - ssh-server-configure
+    - ssh-server-configure-file
 
 - name: start and enable service
   ansible.builtin.service:
