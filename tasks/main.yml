@@ -54,7 +54,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   with_items: "{{ _stat_directories.results }}"
   when:
     - item.stat is defined
@@ -96,7 +96,7 @@
     dest: "{{ ssh_server_config_file }}"
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
     validate: 'sshd -T -f %s'
   notify: restart ssh
   tags:
