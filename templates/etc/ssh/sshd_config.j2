@@ -105,13 +105,13 @@ MaxStartups {{ ssh_server_max_startups }}
 Banner {{ ssh_server_banner }}
 
 # Security options
-{% if ssh_server_ciphers | default([]) | length %}
+{% if ssh_server_ciphers | default([]) | length > 0 %}
 Ciphers {{ ssh_server_ciphers | join(',') }}
 {% endif %}
-{% if ssh_server_key_algorithms | default([]) | length %}
+{% if ssh_server_key_algorithms | default([]) | length > 0 %}
 KexAlgorithms {{ ssh_server_key_algorithms | join(',') }}
 {% endif %}
-{% if ssh_server_macs | default([]) | length %}
+{% if ssh_server_macs | default([]) | length > 0 %}
 MACs {{ ssh_server_macs | join(',') }}
 {% endif %}
 
